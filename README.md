@@ -2,7 +2,7 @@
 My Web-App projects developed using Django.
 
 
-1) For my "1. E-Commerce Project (1)" :
+#1 For my "1. E-Commerce Project (1)" :
 * Project Requirements :
 1. Python (Version 3.11.5 used)
 2. Django (Version 4.2.5 used)
