@@ -29,9 +29,9 @@ class Brand(models.Model):
 
 class Spec(models.Model):
     """
-    Model representing a type of items spec(eg. color, storage, ports,...) with their name and corresponding Category.
+    Model representing a type of items spec(eg. color, storage, ports, ...) with their name and corresponding Category.
     """
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)  # Foreign key to the Category model
     name = models.CharField(max_length=255)
   
     def __str__(self):
@@ -45,12 +45,12 @@ class Item(models.Model):
     image = models.ImageField(default='default_product.png', upload_to='product_pics') # Image field for the item
     title = models.CharField(max_length=60) # Field for the item title/name
     content = models.TextField() # Field for the item description, content, & specs
-    specs = models.ManyToManyField(Spec, through='ItemSpecValue')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    brand = models.ForeignKey(Brand, blank=True, on_delete=models.CASCADE)
+    specs = models.ManyToManyField(Spec, through='ItemSpecValue')  # Many-to-many relationship with Spec model
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)  # Foreign key to the Category model
+    brand = models.ForeignKey(Brand, blank=True, on_delete=models.CASCADE)  # Foreign key to the Brand model
     stock_quantity = models.IntegerField(default=0) # Field for the item stock quantity
     discount = models.IntegerField(default=0, help_text='Enter the discount percentage as an integer.') # Discount Percentage
-    price = models.FloatField() # Field for the item price, 8 max digits & up to 2 decimal places
+    price = models.FloatField() # Field for the item price
     score = models.FloatField(default=0.0) # Field for the item review score
 
     def discounted_price(self):
@@ -75,16 +75,16 @@ class Item(models.Model):
         return reverse('item-detail', kwargs={"pk": self.pk})
 
     class Meta:
-        ordering = ['-pk']
+        ordering = ['-pk']  # Order items by primary key in descending order
 
 
 class ItemSpecValue(models.Model):
     """
-    Many-To-Many Relationship Model for the Item and Spec models, with the actual value.
+    Many-To-Many Relationship Model for the Item and Spec models, with its actual value.
     """
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    spec = models.ForeignKey(Spec, on_delete=models.CASCADE)
-    value = models.CharField(max_length=255)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)  # Foreign key to the Item model
+    spec = models.ForeignKey(Spec, on_delete=models.CASCADE)  # Foreign key to the Spec model
+    value = models.CharField(max_length=255)  # Field for the spec value
   
     def __str__(self):
         """
