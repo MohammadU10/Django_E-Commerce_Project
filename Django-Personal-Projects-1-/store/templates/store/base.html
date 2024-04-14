@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link href="{% static 'store/generated_main.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'store/main.css' %}">
+
+    <!-- FontAwesome Icons -->
+    <script src="https://kit.fontawesome.com/592612459b.js" crossorigin="anonymous"></script>
+
+    {% if title %}
+    <title>Tech Store - {{ title }}</title>
+    {% else %}
+    <title>Tech Store</title>
+    {% endif %}
+</head>
+
+<body>
+    <header class="site-header">
+        <!-- Upper Main Navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{% url 'store-home' %}">Tech Store</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="{% url 'store-home' %}">Home</a>
+                        <a class="nav-item nav-link" href="{% url 'store-about' %}">About</a>
+                        <a class="nav-item nav-link" href="{% url 'store-contact' %}">Contact Us</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                        {% if user.is_authenticated %}
+                            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                        {% else %}
+                            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Lower Navbar containing Side Menu & Categories -->
+        <div class="bg-dark" id="navbar-container">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                    <a class="navbar-brand" href="#">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                        <span class="hm-icon-label">All</span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">All Today's Deals</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Customer Service</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Registry</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Gift Cards</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Sell</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main role="main" class="container">
+        <div class="dark:bg-slate-800">
+            <div class="col-lg-12 dark:text-white dark:text-slate-400">
+                <!-- Main Content goes here -->
+                {% block content %}{% endblock %}
+            </div>
+        </div>        
+    </main>
+
+
+    <footer style="background-color: #666699; font-family: 'sans-serif'; color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="{% url 'store-about' %}" class="text-white">About Us</a> |
+                    <a href="{% url 'store-contact' %}" class="text-white">Contact Us</a>
+    
+                    <ul class="list-inline">
+                        {% for category in categories %}
+                        <li class="list-inline-item"><a href="#" class="text-white">{{ category.name }}</a></li>
+                        <!-- Add more categories as needed -->
+                        {% endfor %}
+                    </ul>
+                </div>
+    
+                <div class="col-md-6">
+                    <p class="text-white">Store Address: 123 Main Street, Milan</p>
+                    <p class="text-white">Email: techstore.co@gmail.com</p>
+                    <p class="text-white">Phone: +123 456 7890</p> <br>
+                    <p class="text-white">&copy; 2023 Tech Store. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+
+</html>
