@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from users.models import CustomUser
 
 class Category(models.Model):
     """
@@ -92,3 +93,32 @@ class ItemSpecValue(models.Model):
         which is a combination of the item name, spec name, and value.
         """
         return f'{self.value}'
+
+
+class Cart(models.Model):
+    """
+    Model for managing User Cart which contains the items added by the User.
+    """
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Item, through='CartItem')
+
+    def __str__(self):
+        """
+        Returns a string representation of the Cart object,
+        """
+        return f'{self.user.first_name}\'s Cart'
+
+
+class CartItem(models.Model):
+    """
+    Model for managing Cart items and their quantity.
+    """
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        """
+        Returns a string representation of the CartItem objects,
+        """
+        return f'{self.cart.user.first_name}\'s {self.item.title} ({self.quantity})'
