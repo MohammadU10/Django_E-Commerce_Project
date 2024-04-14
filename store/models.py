@@ -13,6 +13,14 @@ class Category(models.Model):
         Return the name of the category.
         """
         return f'{self.name}'
+    def get_absolute_url(self):
+        """
+        Return the URL for viewing this Category Items page.
+        """
+        return reverse('categories', kwargs={"name": self.name})
+
+    class Meta:
+        ordering = ['-pk']
 
 
 class Brand(models.Model):
