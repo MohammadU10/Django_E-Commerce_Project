@@ -24,7 +24,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run tests
-      working-directory: ./Django-Personal-Projects-1-
+      working-directory: ./
       run: python manage.py test
 
     - name: Runserver
