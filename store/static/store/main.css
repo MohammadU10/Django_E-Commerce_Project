@@ -157,6 +157,38 @@ body {
   .sidebar a {font-size: 18px;}
 }
 
+.wrap {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.wrap__toggle {
+    padding: 20px;
+    border-radius: 30px;
+    height: 40px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    box-shadow: -10px -10px 15px 0px #f6f6f6, 10px 10px 15px 0px #cecece;
+    color: #676767;
+    transition: ease all 200ms;
+}
+.wrap__toggle.active {
+    color: #3392f5;
+}
+.wrap__toggle--bluetooth {
+    font-size: 20px;
+    font-family: Roboto;
+    flex: 1;
+    padding: 0 0 0 10px;
+}
+.wrap__toggle--toggler {
+    flex: 1;
+}
+
 @tailwind components;
 
 @tailwind utilities;
