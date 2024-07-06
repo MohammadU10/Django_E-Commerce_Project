@@ -8,7 +8,7 @@ My Web-App projects developed using Django.
 2. Django (Version 4.2.5 used)
 
 3. Django-Crispy-Forms, install using pip :
-pip install django-crispy-forms
+'''pip install django-crispy-forms'''
 
 4. Crispy-Bootstrap4, install using pip :
 pip install crispy-bootstrap4
