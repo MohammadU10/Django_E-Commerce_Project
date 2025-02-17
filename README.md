@@ -13,8 +13,8 @@
 ```pip install crispy-bootstrap4```
 
 5. Django Phone_number Fields :
-   - ```pip install phonenumbers```
-   - ```pip install django-phonenumber-field```
+1) ```pip install phonenumbers```
+2)  ```pip install django-phonenumber-field```
 
-6. Python Imaging Library (PIL), which is known as `Pillow` now :
+7. Python Imaging Library (PIL), aka `Pillow` :
 ```pip install Pillow```
