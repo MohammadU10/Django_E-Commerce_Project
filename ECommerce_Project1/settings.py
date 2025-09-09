@@ -27,14 +27,9 @@ SECRET_KEY = 'django-insecure-rh9vlhxhnxy4_8ijq)w6rrrkulhql%9j$7!4m4!-2v7cr2h&c^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://rare-pony-widely.ngrok-free.app',
-]
+CSRF_TRUSTED_ORIGINS = []
 
 
 # Application definition
