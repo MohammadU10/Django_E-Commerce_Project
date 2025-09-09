@@ -13,8 +13,13 @@
                 <form method="POST" id="shipment-form">
                   {% csrf_token %}
                   <fieldset class="form-group">
-                    <legend class="border-bottom font-bold mb-4">Shipping Address</legend>
-                    {{ form|crispy }}
+                    <legend class="border-bottom font-bold mb-4">Choose Shipping Address and Date</legend>
+                    {% if user.addresses.all %}
+                      {{ form.address|as_crispy_field }}
+                    {% else %}
+                      <button class="btn btn-dark flex-grow-1 py-2 mb-2"><a href="{% url 'personal-info' %}"><i class="fas fa-plus" aria-hidden="true"></i> Add an Address</a></button>
+                    {% endif %}
+                    {{ form.date|as_crispy_field }}
                   </fieldset>
                 </form>
             </div>
@@ -26,16 +31,16 @@
                     <div class="space-y-4">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Subtotal</span>
-                            <span class="font-bold">${{ total_cost }}</span>
+                            <span class="font-bold"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ total_cost }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Shipping</span>
-                            <span class="font-bold">${{ shipping_cost }}</span>
+                            <span class="font-bold"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ shipping_cost }}</span>
                         </div>
                         <div class="border-t pt-4">
                             <div class="flex justify-between">
                                 <span class="text-xl font-bold">Total</span>
-                                <span class="text-xl font-bold">${{ grand_total }}</span>
+                                <span class="text-xl font-bold"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ grand_total }}</span>
                             </div>
                         </div>
                         <a href="{% url 'payment' %}">
@@ -69,7 +74,7 @@
                               <div class="flex items-center border rounded">
                                 <p class="w-12 text-center border-x py-1">{{ ci.quantity }}</p>
                               </div>
-                              <p class="text-xl font-bold">${{ subtotal }}</p>
+                              <p class="text-xl font-bold"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ subtotal }}</p>
                           </div>
                       </div>
                   </div>

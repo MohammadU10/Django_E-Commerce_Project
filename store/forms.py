@@ -58,7 +58,7 @@ class ShipmentForm(forms.Form):
 
 class PaymentSelectionForm(forms.Form):
     PAYMENT_CHOICES = [
-        ('payu', 'PayU'),
+        ('zarinpal', 'ZarinPal'),
     ]
 
     payment_method = forms.ChoiceField(

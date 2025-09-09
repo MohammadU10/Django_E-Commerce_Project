@@ -18,3 +18,6 @@
 
 7. Python Imaging Library (PIL), aka `Pillow` :
 ```pip install Pillow```
+
+8. az-iranian-bank-gateways, A Python framework for Iranian payment and bank gateways :
+```pip install az-iranian-bank-gateways```

@@ -58,7 +58,7 @@
                                   </button>
                                 </form>
                               </div>
-                              <p class="text-xl font-bold text-coffee-brown">${{ subtotal }}</p>
+                              <p class="text-xl font-bold text-coffee-brown"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ subtotal }}</p>
                           </div>
                       </div>
                   </div>
@@ -72,16 +72,16 @@
                     <div class="space-y-4">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Subtotal</span>
-                            <span class="font-bold">${{ total_cost }}</span>
+                            <span class="font-bold"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ total_cost }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Shipping</span>
-                            <span class="font-bold">${{ shipping_cost }}</span>
+                            <span class="font-bold"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ shipping_cost }}</span>
                         </div>
                         <div class="border-t pt-4">
                             <div class="flex justify-between">
                                 <span class="text-xl font-bold text-coffee-brown">Total</span>
-                                <span class="text-xl font-bold text-coffee-brown">${{ grand_total }}</span>
+                                <span class="text-xl font-bold text-coffee-brown"><span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"> IRT</span>{{ grand_total }}</span>
                             </div>
                         </div>
                         <a href="{% url 'shipment' %}">
