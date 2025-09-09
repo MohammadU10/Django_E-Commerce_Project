@@ -21,6 +21,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
 from users.views import CsrfExemptLogoutView
+from azbankgateways.urls import az_bank_gateways_urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +31,7 @@ urlpatterns = [
     path('personal-info/', user_views.personal_info, name='personal-info'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', CsrfExemptLogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('bankgateways/', az_bank_gateways_urls()),
     path('', include('store.urls'))
 ]
 

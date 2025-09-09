@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PersonalInfoUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PersonalInfoUpdateForm, AddressFormSet
 from django.contrib.auth import views as auth_views
 
 
@@ -61,16 +61,19 @@ def profile(request):
 def personal_info(request):
     if request.method == 'POST':
         personal_form = PersonalInfoUpdateForm(request.POST, instance=request.user)
-        if personal_form.is_valid():
+        address_formset = AddressFormSet(request.POST, instance=request.user)
+        if personal_form.is_valid() and address_formset.is_valid():
             personal_form.save()
-            messages.success(request, f'Your Personal Info has been updated!')
+            address_formset.save()
+            messages.success(request, 'Your personal info and addresses have been updated!')
             return redirect('personal-info')
-    
     else:
         personal_form = PersonalInfoUpdateForm(instance=request.user)
-    
+        address_formset = AddressFormSet(instance=request.user)
+
     context = {
-        'personal_form': personal_form
+        'personal_form': personal_form,
+        'address_formset': address_formset
     }
-    
+
     return render(request, 'users/personal-info.html', context)

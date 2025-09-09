@@ -1,32 +1,148 @@
 {% extends 'store/base.html' %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
 
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 pt-2">
-    <div class="position-relative w-100 rounded-10 bg-white pt-5 xl-max-w-32 2xl-w-24 3xl-w-19.2 border shadow-0px_1px_4px_rgba(0,0,0,0.08)">
-      <div class="mb-3 flex h-206 gap-3">
-        <div class="position-absolute right-2 mt-1">
-          <div class="d-flex items-center gap-2 flex-column">
-            <div class="rounded-full h-2 w-2" style="background-color: rgb(207, 207, 207);"></div>
-          </div>
+  <style>
+        .size-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .size-btn.active {
+            background-color: #212529;
+            color: white;
+        }
+        .rating-bar {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .rating-fill {
+            height: 100%;
+            background-color: #ffc107;
+            border-radius: 4px;
+        }
+        .product-thumbnail {
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .product-thumbnail:hover {
+            border-color: #666;
+        }
+        .accordion-button::after {
+            margin-right: auto;
+            margin-left: 0;
+        }
+        
+        /* Fix the height of similar product images */
+        .similar-product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        /* Resposive Optimization */
+        @media (max-width: 767.98px) {
+            .search-and-categories {
+                flex-direction: column;
+            }
+            .input-group {
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            .btn-group {
+                display: flex;
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 0.5rem;
+            }
+            .btn-group .btn {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+            .size-btn {
+                width: 35px;
+                height: 35px;
+                margin: 0 3px;
+            }
+            .similar-product-img {
+                height: 200px;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
+            .product-details-container {
+                text-align: center;
+            }
+            .size-selection {
+                justify-content: center;
+            }
+            .similar-product-img {
+                height: 180px;
+            }
+        }
+
+
+        /* Styles for 5-Star rating form field: */
+        #star-rating {
+          display: inline-block;
+        }
+        .star-icon {
+          cursor: pointer;
+          font-size: 1.5rem;
+          color: #ccc;
+          margin-right: 0.25rem;
+        }
+        .star-icon.fa-solid {
+          color: #FFD43B;
+        }
+  </style>
+
+  <div class="container mt-3">
+        <div class="row g-3">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'store-home' %}" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Product Details</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
-        <div class="px-4">
-          <img loading="lazy" width="380" height="452" title="{{ item.title }}" src="{{ item.image.url }}" alt="{{ item.title }} Laptop Image" />
-          <p class="px-10 overflow-hidden text-lg font-medium text-gray-800 d-flex">
-            {{ item.title }}
-          </p>
-        </div>
-      </div>
-      <div class="d-flex px-4 pt-4 font-medium text-gray-800">
-        {{ item.content }}
-      </div>
-      <div class="pt-6">
-        <div class="d-flex justify-content-between px-4 pb-4">
-          <div class="rounded bg-red-600 text-white d-flex justify-content-center items-center gap-1 min-w-6 px-1 h-17 lg-h-19 lg-min-w-7 bg-red-600">
-            <svg class="icon-white-percent fill-white w-9 h-9 lg-w-11 lg-h-11">
-              <i class="fa fa-percent" aria-hidden="true"></i>
-            </svg>
-            <span class="text-center d-flex text-sm justify-content-center items-center font-semiBold leading-4 pt-1 lg-pt-3">{{ item.discount }}</span>
-          </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="position-relative">
+                    <img loading="lazy" width="800" height="80" title="{{ item.title }}" src="{{ item.image.url }}" alt="{{ item.title }} Laptop Image" class="img-fluid rounded">
+                    <div class="d-flex mt-2 justify-content-center justify-content-md-start">
+                        <div class="product-thumbnail me-2">
+                            <img loading="lazy" width="200" height="80" title="{{ item.title }}" src="{{ item.image.url }}" alt="{{ item.title }} Laptop Image" class="img-fluid">
+                        </div>
+                        <div class="product-thumbnail me-2">
+                            <img loading="lazy" width="200" height="80" title="{{ item.title }}" src="{{ item.image.url }}" alt="{{ item.title }} Laptop Image" class="img-fluid">
+                        </div>
+                        <div class="product-thumbnail">
+                            <img loading="lazy" width="200" height="80" title="{{ item.title }}" src="{{ item.image.url }}" alt="{{ item.title }} Laptop Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="ps-md-4 product-details-container">
+                    <div class="mb-2">{{ item.category }}</div>
+                    <h2 class="mb-3">{{ item.title }}</h2>
+                    <div class="d-flex justify-content-between px-4 pb-4">
           <div class="d-flex flex-column align-items-center text-center">
             <p class="text-22 font-semiBold leading-5 text-red-600">
               {{ item.discounted_price }}<span class="text-gray-800 text-xs font-medium mr-1 font-semiBold leading-5 text-red-600"><i class="fa fa-usd" aria-hidden="true"></i></span>
@@ -37,8 +153,256 @@
               </p>
             </div>
           </div>
+          <div class="rounded bg-red-600 text-white d-flex justify-content-center items-center gap-1 min-w-6 px-1 h-17 lg-h-19 lg-min-w-7 bg-red-600">
+            <svg class="icon-white-percent fill-white w-9 h-9 lg-w-11 lg-h-11">
+              <i class="fa fa-percent" aria-hidden="true"></i>
+            </svg>
+            <span class="text-center d-flex text-sm justify-content-center items-center font-semiBold leading-4 pt-1 lg-pt-3">{{ item.discount }}</span>
+          </div>
         </div>
-      </div>
+                    
+                    <div class="mb-4">
+                        <div class="mb-2">Choose Color</div>
+                        <div class="d-flex size-selection">
+                            <div class="size-btn active">Silver</div>
+                            <div class="size-btn">Gold</div>
+                            <div class="size-btn">Pink</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-3">
+                        <div  class="flex items-center border rounded mb-3">
+                          {% if item.cart_quantity > 0 %}
+                            <form method="post" action="{% url 'update_cart_item' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="cart_item_id" value="{{ item.cart_item_id }}">
+                              <input type="hidden" name="action" value="decrement">
+                              {% if item.cart_quantity == 1 %}
+                                <button class="px-3 py-1" type="submit">
+                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                              {% else %}
+                                <button class="px-3 py-1" type="submit">
+                                  <i class="fas fa-minus" aria-hidden="true"></i>
+                                </button>
+                              {% endif %}
+                            </form>
+                            <span class="w-10 text-center border-x py-1">{{ item.cart_quantity }}</span>
+                            <form method="post" action="{% url 'update_cart_item' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="cart_item_id" value="{{ item.cart_item_id }}">
+                              <input type="hidden" name="action" value="increment">
+                              <button class="px-3 py-1" type="submit">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                              </button>
+                            </form>
+                          {% else %}
+                            <form method="post" action="{% url 'add_to_cart' item.id %}">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-dark flex-grow-1 py-2">Add to Cart</button>
+                            </form>
+                          {% endif %}
+                        </div>
+                        <div class="flex items-center mb-3">
+                          <button class="btn btn-outline-dark ms-2">
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                    </div>
+
+                    <div class="accordion" id="productAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDescription">
+                                  Description
+                                </button>
+                            </h2>
+                            <div id="collapseDescription" class="accordion-collapse collapse show" data-bs-parent="#productAccordion">
+                                <div class="accordion-body">
+                                    <p>{{ item.content }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <section class="my-5">
+            <h3 class="mb-4 text-center text-md-start">Score and Reviews</h3>
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <h1 class="display-1 fw-bold">{{ average_score }}</h1>
+                    <div>Of 5</div>
+                    <div class="text-muted">{{ total_reviews }} Reviews</div>
+                </div>
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        {% for star in "5,4,3,2,1"|split:"," %}
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="me-2">{{ star }}</span>
+                                <div class="rating-bar flex-grow-1">
+                                    <div class="rating-fill" 
+                                    style="width: {{ rating_percentages|default_if_none:0|get_item:star }}%"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
+                                <div>
+                                  <!-- User rating form -->
+                                  <form method="post">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                      <legend class="border-bottom mb-4">Add a Review</legend>
+                                      {{ form.title|as_crispy_field }}
+                                      {{ form.content|as_crispy_field }}
+                                      <!-- Rating rendered manually -->
+                                      <div class="star-rating-field mt-3 mb-2">
+                                          <input type="hidden" name="rating" id="rating-input" value="{{ form.rating.value|default:0 }}" />
+                                          <div id="star-rating" class="fa-star-rating">
+                                            {% for i in 1|get_range:5 %}
+                                              <i class="fa star-icon fa-regular fa-star" data-value="{{ i }}" aria-hidden="true"></i>
+                                            {% endfor %}
+                                          </div>
+                                          {% if form.rating.errors %}
+                                            <div class="invalid-feedback d-block">
+                                              {{ form.rating.errors.as_text }}
+                                            </div>
+                                          {% endif %}
+                                      </div>
+                                    </fieldset>
+                                    <div class="form-group">
+                                      <button class="btn btn-outline-info mt-2" type="submit">Submit</button>
+                                    </div>
+                                  </form>
+                                  <!-- Existing reviews -->
+                                  {% for review in reviews %}
+                                    <article class="media content-section border-bottom py-3 mt-5">
+                                      <div class="d-flex align-items-center mb-1">
+                                        <img
+                                          src="{{ review.author.profile.image.url }}"
+                                          alt="{{ review.author.username }}"
+                                          class="rounded-circle me-2"
+                                          style="width:40px; height:40px;"
+                                        />
+                                        <h5 class="mb-0">{{ review.author.username }}</h5>
+                                      </div>
+
+                                      <div class="d-flex align-items-center mb-1">
+                                        <div class="rating-stars me-2">
+                                          {% for i in 1|get_range:5 %}
+                                            {% if review.rating >= i %}
+                                              <i class="fa-solid fa-star text-warning" style="font-size:1rem;"></i>
+                                            {% else %}
+                                              <i class="fa-regular fa-star text-muted"></i>
+                                            {% endif %}
+                                          {% endfor %}
+                                        </div>
+                                        <strong class="mb-0">{{ review.title }}</strong>
+                                      </div>
+
+                                      <div>
+                                        <small class="text-muted">{{ review.date_posted|date:"F d, Y" }}</small>
+                                      </div>
+                                      <p class="mb-0 mt-2">{{ review.content }}</p>
+                                    </article>
+                                  {% empty %}
+                                    <p class="mt-4">No reviews yet. Be the first to leave one!</p>
+                                  {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="my-5">
+            <h3 class="mb-4 text-center">Similar Products</h3>
+            <div class="row">
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">Laptop (1)</h5>
+                            <div class="text-warning mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <span class="ms-1">Rating</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold">discounted_price$</span>
+                                <small class="text-decoration-line-through ms-2">original_price$</small>
+                                <span class="badge bg-danger ms-2">30%-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="">
+                        <div class="card-body">
+                            <h5 class="card-title">Laptop (2)</h5>
+                            <div class="text-warning mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <span class="ms-1">Rating</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold">799$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">Laptop (3)</h5>
+                            <div class="text-warning mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <span class="ms-1">Rating</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold">899$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">Laptop (4)</h5>
+                            <div class="text-warning mb-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <span class="ms-1">Rating</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold">999$</span>
+                                <small class="text-decoration-line-through ms-2">699$</small>
+                                <span class="badge bg-danger ms-2">30%-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-  </div>
 {% endblock %}

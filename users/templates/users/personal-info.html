@@ -1,5 +1,6 @@
 {% extends "store/base.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
     <div class="content-section">
         <div class="media">
@@ -11,26 +12,28 @@
             </div>
         </div>
         <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Personal Info</legend>
-                {% for field in personal_form %}
-                    {% if field.field.widget.input_type %}
-                        <div class="form-group">
-                            <label for="{{ field.id_for_label }}">{{ field.label }}*</label>
-                            <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value|default_if_none:'' }}" required>
-                        </div>
-                    {% else %}
-                        <div class="form-group">
-                            <label for="{{ field.id_for_label }}">{{ field.label }}*</label>
-                            <textarea style="resize: none;" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" placeholder="{{ field.label }}" required>{{ field.value|default_if_none:'' }}</textarea>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
-            </div>
+          {% csrf_token %}
+
+          <!-- Personal Info Form -->
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Personal Info</legend>
+            {{ personal_form|crispy }}
+          </fieldset>
+
+          <!-- Address Formset -->
+          <fieldset class="form-group mt-4">
+            <legend class="border-bottom mb-4">Shipping Addresses</legend>
+            <!-- Display any non-form (formset-level) errors -->
+            {% if address_formset.non_form_errors %}
+              <div class="alert alert-danger">
+                {{ address_formset|as_crispy_errors }}
+              </div>
+            {% endif %}
+            {{ address_formset|crispy }}
+          </fieldset>
+
+          <!-- Submit Button -->
+          <button class="btn btn-outline-info mt-3" type="submit">Save Changes</button>
         </form>
     </div>
 {% endblock content %}

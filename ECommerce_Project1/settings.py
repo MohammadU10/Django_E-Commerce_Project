@@ -22,12 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'Hidden'
+SECRET_KEY = 'django-insecure-rh9vlhxhnxy4_8ijq)w6rrrkulhql%9j$7!4m4!-2v7cr2h&c^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://rare-pony-widely.ngrok-free.app',
+]
 
 
 # Application definition
@@ -43,7 +50,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'tailwind',
+    'theme',
+    'azbankgateways',
 ]
+
+SITE_ID = 1
+
+TAILWIND_APP_NAME = 'theme'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -140,3 +155,21 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'store-home'
 LOGIN_URL = 'login'
+
+
+# Settings for django-iranian-bank-gateways
+AZ_IRANIAN_BANK_GATEWAYS = {
+   'GATEWAYS': {
+       'ZARINPAL': {
+           'MERCHANT_CODE': 'ef3cc960-eb47-45cf-b2e7-2dcd922f5cbf',
+           'SANDBOX': 1,  # 0 disable, 1 active
+       },
+   },
+   'IS_SAMPLE_FORM_ENABLE': False, # Optional, False by default
+   'DEFAULT': 'ZARINPAL',
+   'CURRENCY': 'IRT',
+   'TRACKING_CODE_QUERY_PARAM': 'tc', # Optional
+   'TRACKING_CODE_LENGTH': 16, # Optional
+   'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader', # Optional
+   'BANK_PRIORITIES': ['ZARINPAL'], # Optional
+}

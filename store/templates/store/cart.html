@@ -1,0 +1,117 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+  {% if cart_items %}
+    <!-- Cart Section -->
+    <div class="w-full max-w-7xl mx-auto px-4 py-16 mt-8">
+        <h1 class="text-3xl font-bold text-coffee-brown mb-8">Shopping Cart</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cart Items -->
+            <div class="lg:col-span-2 space-y-6">
+                {% for ci, subtotal in items_with_totals %}
+                  <!-- Cart Item 1 -->
+                  <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-6">
+                      <img src="{{ ci.item.image.url }}" alt="{{ ci.item.title }} " class="w-full md:w-32 h-32 object-cover rounded">
+                      <div class="flex-1">
+                          <div class="flex justify-between items-start">
+                              <div>
+                                  <h3 class="text-xl font-bold text-coffee-brown">{{ ci.item.title }}</h3>
+                                  <p class="text-gray-600">{{ ci.item.brand }}</p>
+                              </div>
+                              <form method="POST" action="{% url 'delete_cart_item' ci.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="text-gray-400 hover:text-red-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                              </form>
+                          </div>
+                          <div class="flex items-center justify-between mt-4">
+                              <div class="flex items-center border rounded">
+                                <form method="post" action="{% url 'update_cart_item' %}">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="cart_item_id" value="{{ ci.id }}">
+                                  <input type="hidden" name="action" value="decrement">
+                                  {% if ci.quantity == 1 %}
+                                    <button class="px-3 py-1 text-coffee-brown hover:bg-coffee-cream">
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+                                  {% else %}
+                                    <button class="px-3 py-1" type="submit">
+                                      <i class="fas fa-minus" aria-hidden="true"></i>
+                                    </button>
+                                  {% endif %}
+                                </form>
+
+                                <input type="number" value="{{ ci.quantity }}" readonly class="w-12 text-center border-x py-1">
+
+                                <form method="post" action="{% url 'update_cart_item' %}">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="cart_item_id" value="{{ ci.id }}">
+                                  <input type="hidden" name="action" value="increment">
+                                  <button class="px-3 py-1 text-coffee-brown hover:bg-coffee-cream">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                  </button>
+                                </form>
+                              </div>
+                              <p class="text-xl font-bold text-coffee-brown">${{ subtotal }}</p>
+                          </div>
+                      </div>
+                  </div>
+                {% endfor %}
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold text-coffee-brown mb-4">Order Summary</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-bold">${{ total_cost }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Shipping</span>
+                            <span class="font-bold">${{ shipping_cost }}</span>
+                        </div>
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between">
+                                <span class="text-xl font-bold text-coffee-brown">Total</span>
+                                <span class="text-xl font-bold text-coffee-brown">${{ grand_total }}</span>
+                            </div>
+                        </div>
+                        <a href="{% url 'shipment' %}">
+                          <button type="submit" class="bg-steel w-full text-white px-6 py-3 rounded-md hover:bg-coffee-light mt-4">Proceed to Checkout</button>
+                        </a>
+                        <a href="{% url 'store-home' %}" class="text-coffee-brown hover:text-coffee-light">
+                          <div class="text-center mt-4">Continue Shopping</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Promo Code -->
+                <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+                    <h2 class="text-xl font-bold text-coffee-brown mb-4">Promo Code</h2>
+                    <div class="flex">
+                        <input type="text" placeholder="Enter promo code" class="flex-1 px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-coffee-brown">
+                        <button class="bg-steel text-white px-4 py-2 rounded-r-md hover:bg-coffee-light">
+                            Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  {% else %}
+    <div class="d-flex justify-content-center">
+      <div style="width: 50%;">
+        <img src="{% static 'misc/empty-cart.svg' %}" class="img-fluid d-block mx-auto" alt="Empty cart" />
+        <p class="text-center">Your cart is empty.</p>
+      </div>
+    </div>
+  {% endif %} 
+{% endblock %}

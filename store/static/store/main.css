@@ -1,4 +1,6 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
     background: #fafafa;
@@ -189,6 +191,39 @@ body {
     flex: 1;
 }
 
-@tailwind components;
 
-@tailwind utilities;
+.toggle-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.checkBox {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.toggle-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.toggle-checkbox {
+  font-size: 1.1em;
+}
+
+.coffee-brown { color: #4A2C2A; }
+.bg-coffee-brown { background-color: #4A2C2A; }
+
+.coffee-light { color: #8B5E3C; }
+.bg-coffee-light { background-color: #8B5E3C; }
+
+.coffee-cream { color: #FFF5E6; }
+.bg-coffee-cream { background-color: #FFF5E6; }

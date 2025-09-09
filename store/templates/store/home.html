@@ -31,8 +31,8 @@
 
               <!-- View item_spec_values related to the 'Processor' Spec -->
               {% with item_spec_values=item.itemspecvalue_set %}
-                {% if item_spec_values|get_item_spec_values_for_spec:'Processor' %}
-                  {% for item_spec in item_spec_values|get_item_spec_values_for_spec:'Processor' %}
+                {% if item_spec_values|get_item_spec_values_for_spec:'CPU' %}
+                  {% for item_spec in item_spec_values|get_item_spec_values_for_spec:'CPU' %}
                     <div class="d-flex flex-column align-items-center mr-5">
                       <i class="fa fa-microchip" aria-hidden="true"></i>
                       <p class="yekanbakh-en text-xs font-semiBold leading-4 text-gray-700">{{ item_spec.value }}</p>
@@ -43,10 +43,10 @@
                 {% endif %}
               {% endwith %}
 
-              <!-- View item_spec_values related to the 'Memory (RAM)' Spec -->
+              <!-- View item_spec_values related to the 'RAM' Spec -->
               {% with item_spec_values=item.itemspecvalue_set %}
-                {% if item_spec_values|get_item_spec_values_for_spec:'Memory (RAM)' %}
-                  {% for item_spec in item_spec_values|get_item_spec_values_for_spec:'Memory (RAM)' %}
+                {% if item_spec_values|get_item_spec_values_for_spec:'RAM' %}
+                  {% for item_spec in item_spec_values|get_item_spec_values_for_spec:'RAM' %}
                     <div class="d-flex flex-column align-items-center">
                       <i class="fa-solid fa-memory"></i>
                       <p class="yekanbakh-en text-xs font-semiBold leading-4 text-gray-700">{{ item_spec.value }}</p>

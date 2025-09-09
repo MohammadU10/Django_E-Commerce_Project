@@ -1,0 +1,17 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="w-full max-w-7xl mx-auto px-4 py-16 mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+              <legend class="border-bottom font-bold mb-4">Thanks for shopping!</legend>
+            </div>
+            <div>
+              <p>Payment Details</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

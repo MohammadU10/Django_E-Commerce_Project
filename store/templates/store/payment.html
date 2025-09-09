@@ -1,0 +1,92 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {% if cart_items %}
+    <div class="w-full max-w-7xl mx-auto px-4 py-16 mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Payment Method Form -->
+                <form method="POST" id="payment-form">
+                  {% csrf_token %}
+                  <fieldset class="form-group">
+                    <legend class="border-bottom font-bold mb-4">Choose Payment Method</legend>
+                    {{ form|crispy }}
+                  </fieldset>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-4">Order Summary</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-bold">${{ total_cost }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Shipping</span>
+                            <span class="font-bold">${{ shipping_cost }}</span>
+                        </div>
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between">
+                                <span class="text-xl font-bold">Total</span>
+                                <span class="text-xl font-bold">${{ grand_total }}</span>
+                            </div>
+                        </div>
+                        <!-- Submit button for Payment Method Form -->
+                        <button type="submit"
+                        form="payment-form"
+                        class="bg-steel w-full text-white px-6 py-3 rounded-md hover:bg-coffee-light mt-4">
+                          Proceed to Pay
+                        </button>
+                        <a href="{% url 'shipment' %}" class="text-coffee-brown hover:text-coffee-light">
+                          <div class="text-center mt-4">Back to Shipping</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Section -->
+        <h1 class="border-bottom font-bold mb-4">Your Order<span class="text-xs font-semiBold text-gray-500  lg:text-sm ml-2">{{ total_items }} items</span></h1>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cart Items -->
+            <div class="lg:col-span-2 space-y-6">
+                {% for ci, subtotal in items_with_totals %}
+                  <!-- Cart Item 1 -->
+                  <div class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row gap-6">
+                      <img src="{{ ci.item.image.url }}" alt="{{ ci.item.title }} " class="w-full md:w-32 h-32 object-cover rounded">
+                      <div class="flex-1">
+                          <div class="flex justify-between items-start">
+                              <div>
+                                  <h3 class="text-xl font-bold">{{ ci.item.title }}</h3>
+                                  <p class="text-gray-600">{{ ci.item.brand }}</p>
+                              </div>  
+                          </div>
+                          <div class="flex items-center justify-between mt-4">
+                              <div class="flex items-center border rounded">
+                                <p class="w-12 text-center border-x py-1">{{ ci.quantity }}</p>
+                              </div>
+                              <p class="text-xl font-bold">${{ subtotal }}</p>
+                          </div>
+                      </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+  {% else %}
+    <div class="d-flex justify-content-center">
+      <div style="width: 50%;">
+        <h1 class="text-center font-bold">Error</h1>
+        <img src="{% static 'misc/empty-cart.svg' %}" class="img-fluid d-block mx-auto" alt="Empty cart" />
+        <p class="text-center">Your cart is empty.</p>
+        <p class="text-muted text-center mt-2 mb-3"><a href="{% url 'store-home' %}">Back to Store</a></p>
+      </div>
+    </div>
+  {% endif %} 
+{% endblock %}
