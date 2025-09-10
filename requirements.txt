@@ -9,7 +9,7 @@ charset-normalizer==3.4.2
 click==8.2.1
 cookiecutter==2.6.0
 crispy-bootstrap4==2024.10
-Django==5.2.3
+Django==5.2.6
 django-crispy-forms==2.3
 django-phonenumber-field==8.0.0
 django-tailwind==4.0.1
